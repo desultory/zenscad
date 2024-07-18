@@ -1,4 +1,4 @@
-include </home/desu/projects/scad/microusb.scad>;
+include <microusb.scad>;
 
 $fn = 50;
 thickness = 1;
