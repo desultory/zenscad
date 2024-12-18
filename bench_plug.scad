@@ -1,24 +1,32 @@
-module bench_plug(plug_depth=15, plug_ideal=19, plug_pad=0.3, inner_diameter=0, outer_diameter=0, wall_thickness=3,
+bench_plug_hole_diameter = 19;
+bench_plug_hole_depth = 30;
+bench_plug_wall_thickness = 3;
+bench_plug_top_thickness = 5;
+
+
+module bench_plug(plug_depth=bench_plug_hole_depth / 2, plug_diameter=bench_plug_hole_diameter,
+		  wall_thickness=bench_plug_wall_thickness, top_thickness=bench_plug_top_thickness,
+		  plug_pad=0.3, inner_diameter=0, outer_diameter=0,
                   slivers=9, sliver_distance=0, sliver_scale_x=0.3, sliver_scale_y=0.5, sliver_skew_x=5.5, sliver_skew_y=0) {
-    plug_diameter = plug_ideal + plug_pad;
-    plug_scale = plug_diameter / plug_ideal;
-    inner_diameter = inner_diameter ? inner_diameter : plug_diameter / 2;
-    outer_diameter = outer_diameter ? outer_dimater : plug_diameter + wall_thickness * 2;
+    d = plug_diameter + plug_pad;
+    plug_scale = d /plug_diameter;
+    inner_diameter = inner_diameter ? inner_diameter : d / 2;
+    outer_diameter = outer_diameter ? outer_dimater : d + wall_thickness * 2;
     sliver_distance = sliver_distance ? sliver_distance : inner_diameter;
     linear_extrude(plug_depth, scale=plug_scale)
     difference(){
-        circle(d=plug_diameter);
+        circle(d=d);
         circle(d=inner_diameter);
         // Slivers (polygons)
-        plug_slivers(plug_diameter, slivers, sliver_distance, sliver_scale_x, sliver_scale_y, sliver_skew_x, sliver_skew_y);
+        plug_slivers(d, slivers, sliver_distance, sliver_scale_x, sliver_scale_y, sliver_skew_x, sliver_skew_y);
     }
-    bench_plug_top(outer_diameter, plug_depth, wall_thickness);
+    bench_plug_top(outer_diameter, plug_depth, top_thickness);
     translate([0, 0, plug_depth + wall_thickness * 2]) bench_plug_attachments();
 }
 
-module bench_plug_top(outer_diameter, plug_depth, wall_thickness) {
+module bench_plug_top(outer_diameter, plug_depth, top_thickness) {
     translate([0, 0, plug_depth])
-    linear_extrude(wall_thickness * 2)
+    linear_extrude(top_thickness)
     circle(d = outer_diameter);
 }
 

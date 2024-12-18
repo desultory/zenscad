@@ -1,6 +1,6 @@
 
 
-block_size = 5;
+block_size = 10;
 b = [block_size, block_size, block_size];
 face_size = block_size * 3 / 4;
 face_offset = (block_size - face_size) / 2;
@@ -12,7 +12,7 @@ module hollow_cube(){
         cube(b);
         translate([0, face_offset, face_offset]) cube([block_size, face_size, face_size]);
         translate([face_offset, 0, face_offset]) cube([face_size, block_size, face_size]);
-        translate([face_offset, face_offset, 0]) cube([face_size, face_size, block_size]);
+        //translate([face_offset, face_offset, 0]) cube([face_size, face_size, block_size]);
     }
 }
 

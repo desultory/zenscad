@@ -1,8 +1,8 @@
 microusb_depth = 6;
-microusb_f_width = 8;
-microusb_f_upper_height = 1.25;
+microusb_f_width = 8.1;
+microusb_f_upper_height = 1.33;
 microusb_f_lower_width = 5.5;
-microusb_f_height = 3;
+microusb_f_height = 3.15;
 
 microusb_insert_length = 2.25;
 microusb_m_width = 7;

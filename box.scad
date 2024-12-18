@@ -1,8 +1,5 @@
 $fn = 100;
 
-lid_rail_thickness = 1.75;
-
-
 module stripe(width, length, gap, thickness, angle=45) {
     neg = angle < 0 ? 1 : 0;
     a = abs(angle) % 360;
@@ -44,7 +41,8 @@ module box_base(width, length, height, thickness, texture_bottom) {
    }
 }
 
-module box(width, length, height, thickness=1.75, texture_bottom=false, lid=false, lid_rail_thickness=lid_rail_thickness, lid_removal_cutout=true) {
+module box(width, length, height, thickness=1.75, texture_bottom=false,
+	   lid=false, lid_rail_thickness=1.75, lid_removal_cutout=true, lid_rail_depth=0) {
     difference() {
         box_base(width, length, height, thickness, texture_bottom);
         box_cutouts(width, length, height, thickness);
@@ -56,7 +54,7 @@ module box(width, length, height, thickness=1.75, texture_bottom=false, lid=fals
     translate([thickness, thickness, 0]) box_extras(width, length, height, thickness);
     if (lid) {
         translate([width + thickness * 4, 0, -thickness])
-        lid(width, length, height, thickness, texture_bottom, lid_rail_thickness);
+        lid(width, length, height, thickness, texture_bottom, lid_rail_thickness, lid_rail_depth);
     }
 }
 
@@ -70,7 +68,7 @@ module lid_removal_cutout(width, length, height, thickness, cutout_size=10) {
 module box_cutouts(width, length, height, thickness) {}
 module box_extras(width, length, height, thickness) {}
 
-module lid_base(width, length, height, thickness, texture_bottom) {
+module lid_base(width, length, height, thickness, texture_bottom, lid_rail_thickness, lid_rail_depth) {
     difference() {
         hull () {
             translate([thickness, thickness])
@@ -83,31 +81,32 @@ module lid_base(width, length, height, thickness, texture_bottom) {
             stripe(width, length + thickness * 2, thickness, thickness / 2, angle=315);
         }
     }
-    translate([thickness, thickness, 0]) lid_rails(width, length, height, thickness, lid_rail_thickness);
-    translate([thickness, thickness, thickness]) lid_extras(width, length, height, thickness);
+    translate([thickness, thickness, 0])
+        lid_rails(width, length, height, thickness, lid_rail_thickness, lid_rail_depth);
+    translate([thickness, thickness, thickness])
+	lid_extras(width, length, height, thickness);
 }
 
-module lid(width, length, height, thickness=2, texture_bottom=false, lid_rail_thickness=0) {
+module lid(width, length, height, thickness=2, texture_bottom=false,
+           lid_rail_thickness=0, lid_rail_depth=0) {
     difference() {
-        lid_base(width, length, height, thickness, texture_bottom);
+        lid_base(width, length, height, thickness, texture_bottom, lid_rail_thickness, lid_rail_depth);
         lid_cutouts(width, length, height, thickness);
-	translate([width + thickness * 2, 0, height]) rotate([0, 180, 0])
-	box_cutouts(width, length, height, thickness);
+	translate([width + thickness * 2, 0, height + thickness]) rotate([0, 180, 0])
+	    box_cutouts(width, length, height, thickness);
     }
 }
 
 module lid_cutouts(width, length, height, thickness) {}
 module lid_extras(width, length, height, thickness) {}
 
-module lid_rails(width, length, height, thickness, lid_rail_thickness=1.75, y_size=0, z_size=0, inset=0.05) {
-    z_size = z_size ? z_size : height / 3;
+module lid_rails(width, length, height, thickness, lid_rail_thickness=1.75, lid_rail_depth=0, inset=0.05) {
+    z_size = lid_rail_depth ? lid_rail_depth : height / 3;
     for (x_offset = [-inset, width - lid_rail_thickness+ inset]) {
-        translate([x_offset, 0, 0])
-        cube([lid_rail_thickness, length, z_size + thickness]);
+        translate([x_offset, 0, 0]) cube([lid_rail_thickness, length, z_size + thickness]);
     }
     for (y_offset = [-inset, length - lid_rail_thickness + inset]) {
-        translate([0, y_offset, 0])
-        cube([width, lid_rail_thickness, z_size + thickness]);
+        translate([0, y_offset, 0]) cube([width, lid_rail_thickness, z_size + thickness]);
     }
 }
 

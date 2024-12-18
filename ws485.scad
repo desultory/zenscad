@@ -43,7 +43,7 @@ module ws485_jack() {
 module ws485_screwterm(cutout=false) {
     x_offset = cutout ? -10 : 0;
     x_inc = cutout ? 10 : 0;
-    z_inc = cutout ? 10 : 0;
+    z_inc = cutout ? 15 : 0;
     seventh = ws485_screw_term_depth / 7;
     cube([ws485_screw_term_width, ws485_screw_term_depth, ws485_screw_term_height]);
     if (cutout) {
@@ -70,6 +70,6 @@ module ws485(clearance=false) {
     }
 }
 
-//ws485();
+ws485(0);
 
 
