@@ -15,13 +15,7 @@ board_hole_diameter = 2.75;
 board_hole_offset = 3.5;
 board_hole_end_offset = 58 + board_hole_offset;
 
-pin_length = 8.5;
-
-ethernet_port_width = 16;
-ethernet_port_depth = 21.7;
-ethernet_port_height = 13.5;
-
-ethernet_y_offset = 10.25 - (ethernet_port_width / 2);
+ethernet_y_offset = 10.25 - (rj45_f_width / 2);
 
 usb_port_y_offsets = [29, 47];
 
@@ -34,9 +28,7 @@ audio_port_diameter = 6.5;
 audio_port_overhang = 2.5;
 audio_port_x_offset = 53.5 - (audio_port_base_width / 2);
 
-hdmi_width = 15.1;
-hdmi_height = 6;
-hdmi_x_offset = 31.75 - (hdmi_width / 2);
+hdmi_x_offset = 31.75 - (hdmi_f_upper_width / 2);
 hdmi_z_offset = 0.6;
 hdmi_overhang = 1.5;
 
@@ -48,9 +40,6 @@ microsd_depth = 15;
 microsd_height = 1.5;
 microsd_y_offset = 22;
 microsd_x_offset = 2.5;
-
-hat_overhang = 4.25;
-magnet_diameter = 6.1;
 
 board_bottom_clearance = microsd_height;
 
@@ -129,6 +118,9 @@ module magnets(width, length, height, thickness) {
 	}
     }
 }
+
+hat_overhang = 4.25;
+magnet_diameter = 6.1;
 
 thickness = 1.75;
 box_width = board_width + microsd_x_offset + port_overhang;
